@@ -230,6 +230,7 @@ if (accountContainer && accountContainerSmall) {
       }
 
       function toggleMenu(element, show) {
+        const dropdownWindow = document.querySelector(".dropdown-window");
         const container = element.closest(
           ".p-navigation__item--dropdown-toggle"
         );
@@ -239,6 +240,11 @@ if (accountContainer && accountContainerSmall) {
 
         if (show) {
           container.classList.add("is-active");
+          [].slice.call(dropdownWindow.children).forEach((dropdownContent) => {
+            if (dropdownContent.classList.contains("u-hide") === false) {
+              dropdownContent.classList.add("u-hide");
+            }
+          });
         } else {
           container.classList.remove("is-active");
         }
