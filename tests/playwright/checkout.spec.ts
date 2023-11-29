@@ -1,6 +1,5 @@
 import { test, expect, } from "@playwright/test";
 import { selectProducts, acceptCookiePolicy, clickRecaptcha, acceptTerms } from "./helplers/commands";
-import { login } from "./helplers/login";
 
   const ENDPOINTS = {
     calculate: "/account/canonical-ua/purchase/calculate*",
@@ -11,16 +10,14 @@ import { login } from "./helplers/login";
     getPurchase: "/account/purchases/*",
     postInvoice: "/account/purchases/*/retry*",
   };
-  test.describe("Checkout- Region and taxes", () => {
+
+  test.describe("Checkout - Region and taxes", () => {
     test("user: it should show correct non-VAT price", async ({page}) => {
       await page.goto("/pro/subscribe")
       await acceptCookiePolicy(page)
       await selectProducts(page);
       await page.getByRole("button", { name: "Buy now" }).click();
 
-      await login().then(()=>{
-        page.reload()
-      })
       await page.click('button[type="submit"]')
       await expect(page).toHaveURL('/account/checkout');
 
@@ -41,9 +38,6 @@ import { login } from "./helplers/login";
     await selectProducts(page);
     await page.getByRole("button", { name: "Buy now" }).click();
     
-    await login().then(()=>{
-      page.reload()
-    })
     await page.click('button[type="submit"]')
     await expect(page).toHaveURL('/account/checkout');
     
@@ -67,9 +61,6 @@ test.describe("Checkout - your inforamtion", ()=>{
     await selectProducts(page);
     await page.getByRole("button", { name: "Buy now" }).click();
     
-    await login().then(()=>{
-      page.reload()
-    })
     await page.click('button[type="submit"]')
     await expect(page).toHaveURL('/account/checkout');
     
@@ -100,9 +91,6 @@ test.describe("Checkout purchase", ()=>{
     await selectProducts(page);
     await page.getByRole("button", { name: "Buy now" }).click();
     
-    await login().then(()=>{
-      page.reload()
-    })
     await page.click('button[type="submit"]')
     await expect(page).toHaveURL('/account/checkout');
     
