@@ -26,5 +26,5 @@ export const acceptTerms = async (page: Page) => {
 }
 
 export const clickRecaptcha = async (page: Page) => {
-  await page.frameLocator('[title="reCAPTCHA"]').getByRole('checkbox', { name: 'I\'m not a robot' }).click();
+  await page.frameLocator('[title="reCAPTCHA"]').getByRole('checkbox', { name: 'I\'m not a robot' }).click({force: true});
 }
