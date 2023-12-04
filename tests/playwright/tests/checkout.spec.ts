@@ -1,7 +1,7 @@
 import { test, expect, } from "@playwright/test";
-import { selectProducts, acceptCookiePolicy, clickRecaptcha, acceptTerms } from "./helplers/commands";
-import { mockChangeCountry, mockPreview } from "./helplers/mockAPI";
-
+import { selectProducts, acceptCookiePolicy, clickRecaptcha, acceptTerms } from "../helplers/commands";
+import { mockChangeCountry, mockPreview } from "../helplers/mockAPI";
+import subResponse from "../../../tests/shop/advantage/fixtures/purchase.json"
   const ENDPOINTS = {
     calculate: "/account/canonical-ua/purchase/calculate*",
     postPurchase: "/pro/purchase*",
@@ -120,33 +120,37 @@ test.describe("Checkout purchase", ()=>{
     await clickRecaptcha(page)
     await page.waitForTimeout(3000)
 
-    await page.route(ENDPOINTS.customerInfo, async (route) => {
-      await route.fulfill({
-        status: 200,
-      });
-    })
     await page.route(ENDPOINTS.preview, async (route) => {
       await route.fulfill({
         status: 200,
-      });
+        body: JSON.stringify({ currency: "USD",
+        subtotal: 16700,
+        tax: 1670,
+        total: 18370 })
+      })
     })
     await page.route(ENDPOINTS.postPurchase, async (route) => {
       await route.fulfill({
         status: 200,
+        body: JSON.stringify({
+          account_id: "test",
+          marketplace: "canonical-ua",
+          action: "purchase",
+          previous_purchase_id: "test"
+        })
       });
     })
-    await page.route(ENDPOINTS.getPurchase, async(route) => {
-      const response = await route.fetch();
-      route.fulfill({
-        status: 200,
-      });
-    })
+      await page.route(ENDPOINTS.getPurchase, async(route) => {
+        await route.fulfill({
+          status: 200,
+          body: JSON.stringify(subResponse)
+        })
 
-    await page.getByRole("button",{ name: "Buy"}).click()
-    
-    await page.waitForTimeout(3000)
-
-    await expect(page).toHaveURL('/pro/dashboard');
-    await expect(page.getByText("Your subscriptions")).toBeTruthy()
+      await page.getByRole("button",{ name: "Buy"}).click({force :true})
+      await page.waitForResponse(ENDPOINTS.getPurchase)
+      
+      await expect(page).toHaveURL('/pro/dashboard');
+      expect(page.getByText("Your subscriptions")).toBeTruthy()
+    });
   })
-})
+});

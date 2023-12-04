@@ -13,7 +13,7 @@ dotenv.config({
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: path.join(__dirname, "tests/playwright"),
+  testDir: path.join(__dirname, "tests/playwright/tests"),
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -40,7 +40,7 @@ export default defineConfig({
   projects: [
     {
       name: 'checkout',
-      testMatch: "checkout.spec.ts",
+      testMatch: "*.spec.ts",
       use: { ...devices['Desktop Chrome'], baseURL: "http://0.0.0.0:8001/", storageState: STORAGE_STATE},
     },
   ],

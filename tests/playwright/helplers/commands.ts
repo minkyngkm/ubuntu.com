@@ -17,12 +17,12 @@ export const selectProducts = async (
 export const acceptCookiePolicy = async (
   page: Page,
 ) => {
-  await page.getByRole("button", { name: "Accept all and visit site" }).click();
+  await page.getByRole("button", { name: "Accept all and visit site" }).click({force: true});
 };
 
 export const acceptTerms = async (page: Page) => {
-  await page.getByText(/I agree to the Ubuntu Pro service terms/).click()
-  await page.getByText(/I agree to the Ubuntu Pro description/).click()
+  await page.getByText(/I agree to the Ubuntu Pro service terms/).click({force: true})
+  await page.getByText(/I agree to the Ubuntu Pro description/).click({force: true})
 }
 
 export const clickRecaptcha = async (page: Page) => {
