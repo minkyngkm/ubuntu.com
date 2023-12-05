@@ -4,10 +4,10 @@ import { getRandomEmail } from "../helplers/utils";
 
 test.describe("/pro/users", () => {
   const email = getRandomEmail();
-  test("add a user correctly", async ({page}) => {
+  test("It should add and delete a user correctly", async ({page}) => {
 
     await page.goto("/pro/users")
-    await page.click('button[type="submit"]')
+    await page.locator('button[type="submit"]').click()
     
     await acceptCookiePolicy(page)
     await page.getByRole("button", { name: /Add new user/ }).click();

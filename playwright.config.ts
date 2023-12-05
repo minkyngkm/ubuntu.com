@@ -34,6 +34,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     baseURL: "http://0.0.0.0:8001/",
     ignoreHTTPSErrors: true,
+    headless: true,
   },
   
   /* Configure projects for major browsers */
